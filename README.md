@@ -12,7 +12,6 @@
 <div align="center">
   <a href="https://github.com/picsoung"><img alt="GitHub followers" src="https://img.shields.io/github/followers/picsoung?style=social"></a>
   <a href="https://twitter.com/picsoung"><img alt="Twitter Follow" src="https://img.shields.io/twitter/follow/picsoung?style=social"></a>
-  <img alt="License" src="https://img.shields.io/badge/License-GPLv3-blue.svg">
 </div>
 
 <div align="center">
