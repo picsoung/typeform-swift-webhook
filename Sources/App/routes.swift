@@ -12,8 +12,12 @@ func routes(_ app: Application) throws {
     }
     
     app.post("webhook") { req -> String in
-        let signature:String = req.headers["typeform-signature"][0]
-        let isValid:Bool = verifySig(receivedSig: signature, payload: req.body)
+        let header = req.headers["typeform-signature"]
+        if (header.count == 0) {
+            return "Request is not signed :("
+        }
+        
+        let isValid:Bool = verifySig(receivedSig: header[0], payload: req.body)
         if(isValid){
             return "Hello, world!"
         }else{
@@ -25,8 +29,9 @@ func routes(_ app: Application) throws {
 
 func verifySig(receivedSig: String, payload: Request.Body) -> Bool{
     let secretString = "abc123" //REPLACE by your own
-    let key = SymmetricKey(data: secretString.data(using: .utf8)!)
-    let regenSig = HMAC<SHA256>.authenticationCode(for: Data(payload.string!.utf8), using: key)
+    let payloadString = payload.string ?? ""
+    let key = SymmetricKey(data: Data(secretString.utf8))
+    let regenSig = HMAC<SHA256>.authenticationCode(for: Data(payloadString.utf8), using: key)
     let sigData = Data(regenSig)
     let sigBase64 = sigData.base64EncodedString()
     let final = "sha256=\(sigBase64)"
